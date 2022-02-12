@@ -94,6 +94,16 @@ const App = () => {
     ])
 
   };
+  search = (e) => {
+       const value = e.target.value;
+       const todos = this.state.todos.filter(todo => {
+         return todo.content.toLowerCase().includes(value);
+       })
+      console.log(value)
+       this.setState({
+        todos
+       })
+    }
 
   const ListItem = ({ todo }) => {
     return (

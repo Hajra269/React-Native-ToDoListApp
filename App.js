@@ -16,22 +16,10 @@ const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    getTasksFromDevice();
+    getTask();
   }, [])
-
-  useEffect(() => {
-    saveTasksToDevice();
-  }, [todos])
-
-  const saveTasksToDevice = async () => {
-    try {
-      const stringifyTasks = JSON.stringify(todos)
-      await AsyncStorage.setItem('todos', stringifyTasks)
-    } catch (e) {
-      console.error(e)
-    }
-  };
-  const getTasksFromDevice = async () => {
+  
+   const getTask = async () => {
     try {
       const todos = await AsyncStorage.getItem('todos')
       if (todos != null) {
@@ -42,6 +30,19 @@ const App = () => {
       console.error(e)
     }
   };
+  useEffect(() => {
+    saveTask();
+  }, [todos])
+  
+   const saveTask= async () => {
+    try {
+      const stringifyTasks = JSON.stringify(todos)
+      await AsyncStorage.setItem('todos', stringifyTasks)
+    } catch (e) {
+      console.error(e)
+    }
+  };
+
   const setToDo = () => {
     if (textInput == '') {
       Alert.alert('Error', 'Please Enter a Task!')
@@ -121,7 +122,7 @@ const App = () => {
           {!todo?.completed && (
             <TouchableOpacity onPress={() => markToDoComplete(todo?.id)}>
               <Text style={{ fontSize: 20 }}>
-                ✅ {/*was suppose to use vector icons but then thought to do it simply but it's not good practice though */}
+                ✅
               </Text>
             </TouchableOpacity>
           )}
@@ -225,7 +226,6 @@ const App = () => {
         </View>
       </Modal>
 
-
       <View style={styles.footer}>
         <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
           <View style={styles.iconContainer}>
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
     bottom: 30,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.gray,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
